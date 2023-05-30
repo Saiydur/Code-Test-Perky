@@ -3,5 +3,73 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<div class="row">
+    <div class="col-12 mb-2 p-4">
+        <a href="/item/create" class="btn btn-primary">Create</a>
+    </div>
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">DataTable with default features</h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <table id="items" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Unit Price</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>Name</th>
+                            <th>Unit Price</th>
+                            <th>Actions</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+    </div>
+    <!-- /.col -->
+</div>
 
+@section Scripts
+    {
+    <script>
+        $(document).ready(function () {
+            $('#items').DataTable({
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                    "url": "https://localhost:7238/api/Item",
+                    "type": "GET",
+                    "dataSrc": function (data) {
+                        console.log(data); // Log the response data
+                        return data.map(function (item) {
+                            return {
+                                "name": item.name,
+                                "unitPrice": item.unitPrice,
+                                "actions": `<button type="submit" class="btn btn-info btn-sm" onclick="window.location.href='/Admin/Category/Edit/${item.id}'" value='${item.id}'>
+                                                        <i class="fas fa-pencil-alt"></i> Edit
+                                                    </button>
+                                                    <button type="submit" class="btn btn-danger btn-sm show-bs-modal" data-id='${item.id}' value='${item.id}'>
+                                                        <i class="fas fa-trash"></i> Delete
+                                                    </button>`
+                            };
+                        });
+                    }
+                },
+                "columns": [
+                    { "data": "name" },
+                    { "data": "unitPrice" },
+                    { "data": "actions" }
+                ]
+            });
+        });
+    </script>
+}

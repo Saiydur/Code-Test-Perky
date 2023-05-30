@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using CRUD.API.Models;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,6 +8,7 @@ namespace CRUD.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors("AllowSpecificOrigin")]
     public class ItemController : ControllerBase
     {
         private readonly ILifetimeScope _scope;

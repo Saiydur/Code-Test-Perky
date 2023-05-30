@@ -37,6 +37,16 @@ try
 
     // Add services to the container.
 
+    builder.Services.AddCors(options =>
+    {
+        options.AddPolicy("AllowSpecificOrigin", builder =>
+        {
+            builder.WithOrigins("https://localhost:7284")
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
+    });
+
     builder.Services.AddControllers();
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
     builder.Services.AddEndpointsApiExplorer();
@@ -56,6 +66,8 @@ try
     app.UseAuthorization();
 
     app.MapControllers();
+
+    app.UseCors("AllowSpecificOrigin");
 
     app.Run();
 }
